@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Déclic JeuVidéo</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--blue:#00C8FF;--purple:#7B2FBE;--green:#00E5A0;--dark:#07071a;--card-r:18px;--shadow:0 8px 32px rgba(0,0,0,.4)}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--dark);color:#fff;min-height:100vh;overflow-x:hidden}
+
+  .screen{display:none;min-height:100vh;flex-direction:column;animation:fadeIn .4s ease}
+  .screen.active{display:flex}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+  #screen-welcome{background:linear-gradient(145deg,#1a0a3a 0%,#0d1b4a 50%,#07071a 100%)}
+  #screen-quiz{background:linear-gradient(160deg,var(--quizTop,#1a0a3a) 0%,#07071a 100%)}
+  #screen-results{background:linear-gradient(160deg,#07071a 0%,#0d1b4a 100%)}
+
+  /* ── Welcome ── */
+  .welcome-inner{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;position:relative;overflow:hidden}
+  .deco-circle{position:absolute;border-radius:50%;pointer-events:none}
+  .deco-circle.c1{width:320px;height:320px;background:rgba(0,200,255,.1);top:-90px;right:-90px}
+  .deco-circle.c2{width:220px;height:220px;background:rgba(123,47,190,.12);bottom:40px;left:-70px}
+
+  .logo-box{width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.1);border:2px solid rgba(0,200,255,.4);display:flex;align-items:center;justify-content:center;font-size:52px;margin-bottom:24px;z-index:1;box-shadow:0 0 30px rgba(0,200,255,.2)}
+  h1{font-size:clamp(28px,7vw,38px);font-weight:900;text-align:center;margin-bottom:10px;z-index:1;background:linear-gradient(90deg,#00C8FF,#7B2FBE);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .welcome-sub{font-size:16px;color:rgba(255,255,255,.72);text-align:center;line-height:1.6;margin-bottom:38px;z-index:1;max-width:320px}
+  .features{width:100%;max-width:380px;background:rgba(255,255,255,.07);border-radius:16px;padding:20px;margin-bottom:34px;z-index:1;display:flex;flex-direction:column;gap:14px;border:1px solid rgba(0,200,255,.15)}
+  .feat{display:flex;align-items:center;gap:14px;font-size:15px;font-weight:600}
+  .feat span:first-child{font-size:22px;width:30px}
+
+  .btn{width:100%;max-width:380px;z-index:1;border:none;border-radius:16px;cursor:pointer;overflow:hidden;box-shadow:0 6px 24px rgba(0,200,255,.3)}
+  .btn-inner{background:linear-gradient(90deg,#00C8FF,#7B2FBE);padding:18px;font-size:17px;font-weight:800;color:#fff;display:block;text-align:center;letter-spacing:.3px}
+  .btn-inner:hover{filter:brightness(1.1)}
+  .disclaimer{color:rgba(255,255,255,.4);font-size:13px;margin-top:14px;z-index:1}
+  .version-date{color:rgba(255,255,255,.3);font-size:11px;margin-top:6px;z-index:1;letter-spacing:.3px}
+  .counter-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(0,200,255,.25);border-radius:20px;padding:8px 16px;margin-top:12px;z-index:1}
+  .counter-badge .counter-icon{font-size:18px}
+  .counter-badge .counter-text{font-size:13px;color:rgba(255,255,255,.8);font-weight:600}
+  .counter-badge .counter-num{font-size:16px;font-weight:900;color:#00C8FF}
+
+  /* ── Quiz ── */
+  .quiz-header{padding:16px 20px 6px}
+  .back-btn{background:none;border:none;color:rgba(255,255,255,.7);font-size:15px;font-weight:600;cursor:pointer;padding:4px 0}
+  .back-btn:hover{color:#fff}
+  .progress-wrap{padding:6px 20px 10px}
+  .progress-bar{height:6px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,#00C8FF,#7B2FBE);border-radius:3px;transition:width .4s ease}
+  .progress-label{color:rgba(255,255,255,.7);font-size:12px;font-weight:600;text-align:center;margin-top:5px}
+  .quiz-body{flex:1;overflow-y:auto;padding:10px 20px 40px}
+  .cat-badge{display:inline-block;background:rgba(0,200,255,.15);border:1px solid rgba(0,200,255,.3);border-radius:20px;padding:5px 14px;font-size:13px;font-weight:700;letter-spacing:.3px;margin-bottom:16px;color:#00C8FF}
+  .q-emoji{font-size:52px;display:block;margin-bottom:12px}
+  .q-text{font-size:clamp(18px,5vw,22px);font-weight:800;line-height:1.35;margin-bottom:8px}
+  .q-sub{color:rgba(255,255,255,.6);font-size:14px;margin-bottom:10px;line-height:1.5}
+
+  .select-counter{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;margin-bottom:20px;transition:all .3s}
+  .select-counter.full{background:rgba(0,200,255,.2);color:#00C8FF}
+  .counter-dots{display:flex;gap:5px}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25);transition:all .25s}
+  .dot.filled{background:#fff}
+  .dot.filled.gold{background:#00C8FF}
+
+  .opts-list{display:flex;flex-direction:column;gap:10px}
+  .opt{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:15px 16px;cursor:pointer;transition:all .18s ease;position:relative;user-select:none}
+  .opt:hover:not(.disabled){background:rgba(255,255,255,.12);border-color:rgba(0,200,255,.4)}
+  .opt.chosen{background:rgba(0,200,255,.15);border-color:#00C8FF}
+  .opt.chosen.second{background:rgba(123,47,190,.2);border-color:#7B2FBE}
+  .opt.disabled{opacity:.4;cursor:not-allowed}
+  .opt-emoji{font-size:24px;width:32px;flex-shrink:0}
+  .opt-label{font-size:15px;font-weight:600;flex:1}
+  .opt-desc{font-size:12px;color:rgba(255,255,255,.55);margin-top:3px;line-height:1.4}
+  .opt-text-block{flex:1;display:flex;flex-direction:column}
+  .check{width:22px;height:22px;border-radius:50%;background:#00C8FF;display:flex;align-items:center;justify-content:center;color:#07071a;font-size:11px;font-weight:900;opacity:0;transition:opacity .15s;flex-shrink:0}
+  .opt.chosen .check{opacity:1}
+  .opt.chosen.second .check{background:#7B2FBE;color:#fff}
+  .check-num{font-size:12px;font-weight:900}
+
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opt-grid{display:flex;flex-direction:column;align-items:center;gap:6px;background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:16px 12px;cursor:pointer;transition:all .18s ease;position:relative;user-select:none}
+  .opt-grid:hover:not(.disabled){background:rgba(255,255,255,.12);border-color:rgba(0,200,255,.4)}
+  .opt-grid.chosen{background:rgba(0,200,255,.15);border-color:#00C8FF}
+  .opt-grid.chosen.second{background:rgba(123,47,190,.2);border-color:#7B2FBE}
+  .opt-grid.disabled{opacity:.4;cursor:not-allowed}
+  .opt-grid .opt-emoji{font-size:28px;width:auto}
+  .opt-grid .opt-label{font-size:13px;font-weight:600;text-align:center}
+  .opt-grid .check{position:absolute;top:8px;right:8px}
+
+  .next-wrap{margin-top:20px;width:100%}
+  .next-btn{width:100%;border:none;border-radius:14px;overflow:hidden;cursor:pointer;box-shadow:0 4px 20px rgba(0,200,255,.3);opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;pointer-events:none}
+  .next-btn.visible{opacity:1;transform:translateY(0);pointer-events:all}
+  .next-inner{background:linear-gradient(90deg,#00C8FF,#7B2FBE);padding:16px;font-size:16px;font-weight:800;color:#fff;display:block;text-align:center}
+  .next-inner:hover{filter:brightness(1.1)}
+
+  /* ── Résultats ── */
+  .results-inner{padding:24px 20px 40px}
+  .res-header{text-align:center;padding-bottom:24px}
+  .res-emoji{font-size:56px;display:block;margin-bottom:14px}
+  .res-title{font-size:clamp(24px,6vw,30px);font-weight:900;margin-bottom:10px}
+  .res-sub{color:rgba(255,255,255,.65);font-size:15px;line-height:1.55;max-width:340px;margin:0 auto}
+
+  .career-card{border-radius:20px;margin-bottom:16px;overflow:hidden;box-shadow:var(--shadow)}
+  .career-inner{padding:20px}
+  .card-header{display:flex;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+  .rank-badge{padding:4px 10px;border-radius:12px;font-weight:800;font-size:11px;color:#07071a}
+  .compat-badge{background:rgba(255,255,255,.2);padding:4px 10px;border-radius:12px;font-weight:700;font-size:12px}
+  .card-main{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+  .card-icon{font-size:44px}
+  .card-cat{color:rgba(255,255,255,.7);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+  .card-job{font-size:clamp(18px,5vw,22px);font-weight:800;line-height:1.2}
+  .card-desc{color:rgba(255,255,255,.85);font-size:14px;line-height:1.5;margin-bottom:8px}
+  .card-details{border-top:1px solid rgba(255,255,255,.2);margin-top:12px;padding-top:12px;display:flex;flex-direction:column;gap:10px}
+  .detail-row{display:flex;gap:10px;align-items:flex-start}
+  .detail-icon{font-size:17px;width:24px;flex-shrink:0;padding-top:1px}
+  .detail-lbl{color:rgba(255,255,255,.6);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+  .detail-val{color:#fff;font-size:14px;font-weight:600;margin-top:2px}
+  .platform-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+  .platform-chip{background:rgba(0,200,255,.15);border:1px solid rgba(0,200,255,.3);padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;color:#00C8FF}
+  .trait-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+  .trait-chip{background:rgba(123,47,190,.25);border:1px solid rgba(123,47,190,.4);padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;color:#b47dff}
+  .video-btn{display:flex;align-items:center;gap:10px;background:rgba(255,0,0,.15);border:1px solid rgba(255,0,0,.35);border-radius:12px;padding:12px 16px;margin-top:12px;cursor:pointer;text-decoration:none;color:#fff;font-weight:700;font-size:14px;transition:all .2s}
+  .video-btn:hover{background:rgba(255,0,0,.25);border-color:rgba(255,0,0,.6)}
+  .tap-hint{color:rgba(255,255,255,.5);font-size:12px;text-align:center;margin-top:10px}
+
+  .advice-box{background:rgba(0,200,255,.06);border-radius:16px;padding:18px;margin-bottom:20px;border-left:3px solid #00C8FF}
+  .advice-title{color:#00C8FF;font-size:15px;font-weight:800;margin-bottom:8px}
+  .advice-text{color:rgba(255,255,255,.72);font-size:14px;line-height:1.55}
+  .action-btns{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+  .act-btn{border:none;border-radius:14px;overflow:hidden;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+  .act-inner{padding:16px;font-size:16px;font-weight:700;color:#fff;display:block;text-align:center}
+  .act-inner.purple{background:linear-gradient(90deg,#7B2FBE,#3d1060)}
+  .act-inner.blue{background:linear-gradient(90deg,#00C8FF,#0072ff)}
+  .act-inner:hover{filter:brightness(1.1)}
+  .home-link{display:block;text-align:center;color:rgba(255,255,255,.4);font-size:15px;font-weight:600;padding:12px;cursor:pointer;background:none;border:none;width:100%}
+  .home-link:hover{color:rgba(255,255,255,.7)}
+  .res-footer{color:rgba(255,255,255,.2);font-size:12px;text-align:center;margin-top:8px}
+
+  ::-webkit-scrollbar{width:4px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:rgba(0,200,255,.3);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- ═══ ACCUEIL ═══ -->
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-inner">
+    <div class="deco-circle c1"></div>
+    <div class="deco-circle c2"></div>
+    <div class="logo-box">🎮</div>
+    <h1>Déclic JeuVidéo</h1>
+    <p class="welcome-sub">Découvrez les jeux vidéo qui vous correspondent vraiment</p>
+    <div class="features">
+      <div class="feat"><span>❓</span><span>15 questions sur votre style de jeu</span></div>
+      <div class="feat"><span>✌️</span><span>Jusqu'à 2 réponses par question</span></div>
+      <div class="feat"><span>🎯</span><span>3 profils gamer personnalisés</span></div>
+      <div class="feat"><span>▶️</span><span>Vidéo démo + plateformes compatibles</span></div>
+    </div>
+    <button class="btn" onclick="startQuiz()">
+      <span class="btn-inner">Lancer le test &nbsp;→</span>
+    </button>
+    <div class="counter-badge">
+      <span class="counter-icon">🎮</span>
+      <span class="counter-text">Tests démarrés :</span>
+      <span class="counter-num" id="counter-display">...</span>
+    </div>
+    <p class="disclaimer">Gratuit · 3 minutes · Résultats instantanés</p>
+    <p class="version-date">🔄 Dernière mise à jour : 08 avril 2026 à 12h00</p>
+    <p class="version-date">✨ Application créée par Stef64</p>
+  </div>
+</div>
+
+<!-- ═══ QUIZ ═══ -->
+<div id="screen-quiz" class="screen">
+  <div class="quiz-header">
+    <button class="back-btn" onclick="goBack()">← Retour</button>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="pFill" style="width:0%"></div></div>
+    <p class="progress-label" id="pLabel">1 / 15</p>
+  </div>
+  <div class="quiz-body" id="quiz-body"></div>
+</div>
+
+<!-- ═══ RÉSULTATS ═══ -->
+<div id="screen-results" class="screen">
+  <div class="results-inner" id="results-inner"></div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════
+   PROFILS GAMER
+══════════════════════════════════════════════════ */
+const PROFILES = {
+  EXPLORATEUR: {
+    name: "L'Explorateur",
+    icon: '🌍',
+    grad: ['#00C8FF', '#0072ff'],
+    gradDark: ['#004a8f', '#002a5c'],
+    description: "Tu adores te perdre dans des mondes immenses, découvrir chaque recoin d'une carte et vivre des aventures épiques en totale liberté.",
+    traits: ['Curieux', 'Patient', 'Immersif', 'Aventurier', 'Observateur'],
+    pourquoi: 'Les mondes ouverts et les RPG sont ta zone de confort — chaque heure de jeu est une nouvelle découverte.',
+    games: [
+      {name:"Elden Ring",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=E3Huy2cdih0",desc:"Un monde sombre et sublime à explorer librement, parsemé de secrets et de boss légendaires."},
+      {name:"The Legend of Zelda: Tears of the Kingdom",platforms:["Switch"],video:"https://www.youtube.com/watch?v=uHGShqcAHlQ",desc:"Un monde ouvert vertical et aérien où la créativité n'a aucune limite."},
+      {name:"Ghost of Tsushima",platforms:["PS5","PC"],video:"https://www.youtube.com/watch?v=iqysmS4lxwQ",desc:"Un Japon féodal magnifique à explorer en samouraï, entre forêts de bambou et villages en feu."},
+      {name:"Genshin Impact",platforms:["PC","PS5","Mobile","Switch"],video:"https://www.youtube.com/watch?v=5kdU1Zb6gJI",desc:"Un RPG gratuit avec un monde immense et coloré à explorer seul ou en co-op."},
+    ]
+  },
+  COMPÉTITEUR: {
+    name: "Le Compétiteur",
+    icon: '⚔️',
+    grad: ['#FF4500', '#FF8C00'],
+    gradDark: ['#8B2500', '#6b4500'],
+    description: "Tu vis pour gagner. Le classement, le skill, la progression — chaque partie est une occasion de te surpasser et d'écraser tes adversaires.",
+    traits: ['Compétitif', 'Réactif', 'Focalisé', 'Stratégique', 'Persévérant'],
+    pourquoi: "Les jeux en ligne compétitifs et les FPS te font vibrer — la victoire s'arrache, elle ne se donne pas.",
+    games: [
+      {name:"Valorant",platforms:["PC"],video:"https://www.youtube.com/watch?v=e_E9W2vsRbQ",desc:"Un FPS tactique 5v5 avec des agents aux capacités uniques. Vise juste, joue en équipe."},
+      {name:"Counter-Strike 2",platforms:["PC"],video:"https://www.youtube.com/watch?v=rJMnqIyBEA8",desc:"Le FPS compétitif de référence depuis 20 ans. Simple à comprendre, impossible à maîtriser."},
+      {name:"Apex Legends",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=innmNewjkuk",desc:"Un battle royale nerveux avec des légendes aux pouvoirs uniques et un gameplay hyper fluide."},
+      {name:"Rocket League",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=EKeJlhHhLnE",desc:"Du foot avec des voitures volantes. Facile à apprendre, des années à maîtriser."},
+    ]
+  },
+  STRATÈGE: {
+    name: "Le Stratège",
+    icon: '🧠',
+    grad: ['#00E5A0', '#00998a'],
+    gradDark: ['#006655', '#003d33'],
+    description: "Tu réfléchis avant d'agir. Planifier, optimiser, anticiper les mouvements ennemis — c'est ça qui te donne des frissons.",
+    traits: ['Analytique', 'Patient', 'Méthodique', 'Tactique', 'Prévoyant'],
+    pourquoi: "Les jeux de stratégie et de gestion te permettent d'exercer ton cerveau — chaque décision compte.",
+    games: [
+      {name:"Civilization VII",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=V3kYFAKi5kI",desc:"Construis la civilisation la plus puissante de l'histoire. Chaque partie est unique."},
+      {name:"Age of Empires IV",platforms:["PC","Xbox"],video:"https://www.youtube.com/watch?v=V2-GpnlVbU0",desc:"Stratégie en temps réel historique avec une profondeur tactique et des campagnes épiques."},
+      {name:"Stellaris",platforms:["PC"],video:"https://www.youtube.com/watch?v=JkiSZpnNW0k",desc:"Construis un empire galactique et domine l'univers. Une profondeur infinie."},
+      {name:"XCOM 2",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=XR4OhNmGqFk",desc:"Stratégie au tour par tour où chaque erreur peut coûter un soldat. Intense et addictif."},
+    ]
+  },
+  NARRATEUR: {
+    name: "Le Narrateur",
+    icon: '📖',
+    grad: ['#A29BFE', '#6C5CE7'],
+    gradDark: ['#3d2fa0', '#1e1060'],
+    description: "Tu joues pour vivre une histoire. Les personnages, l'émotion, les choix moraux — tu veux être touché(e) au cœur par un jeu.",
+    traits: ['Émotif', 'Immersif', 'Curieux', 'Empathique', 'Créatif'],
+    pourquoi: "Les RPG narratifs et les jeux d'aventure te permettent de vivre des histoires impossibles dans la réalité.",
+    games: [
+      {name:"Baldur's Gate 3",platforms:["PC","PS5"],video:"https://www.youtube.com/watch?v=pF97M_JJCjk",desc:"Le RPG ultime avec une liberté de narration totale. Chaque choix change l'histoire."},
+      {name:"The Witcher 3",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=c0i88t0Kacs",desc:"Geralt de Riv dans un monde médiéval-fantastique riche, avec des quêtes profondément humaines."},
+      {name:"Cyberpunk 2077",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=8X2kIfS6fb8",desc:"Night City en 2077 : une ville vivante, une histoire intense, des choix qui comptent vraiment."},
+      {name:"Detroit: Become Human",platforms:["PC","PS4"],video:"https://www.youtube.com/watch?v=bQEe4eEcq_Q",desc:"Un film interactif où chaque décision fait bifurquer l'histoire. Bouleversant."},
+    ]
+  },
+  CRAFTEUR: {
+    name: "Le Crafteur",
+    icon: '🔨',
+    grad: ['#FDCB6E', '#E17055'],
+    gradDark: ['#8b5e00', '#6b3200'],
+    description: "Tu aimes construire, créer, optimiser. Monter une base de zéro, automatiser des machines, bâtir ta propre ville — c'est ton bonheur.",
+    traits: ['Créatif', 'Organisé', 'Patient', 'Perfectionniste', 'Autonome'],
+    pourquoi: "Les jeux de construction et de survie te donnent une liberté totale pour exprimer ta créativité.",
+    games: [
+      {name:"Minecraft",platforms:["PC","PS5","Xbox","Switch","Mobile"],video:"https://www.youtube.com/watch?v=MmB9b5njVbA",desc:"Le bac à sable ultime. Construis, explore, survie — tout est possible dans un monde infini."},
+      {name:"Valheim",platforms:["PC"],video:"https://www.youtube.com/watch?v=sRFjQ7b2C5Q",desc:"Survie et construction dans un monde Viking mythologique. Magnifique et profond."},
+      {name:"Satisfactory",platforms:["PC"],video:"https://www.youtube.com/watch?v=rk3IOoyfGQ0",desc:"Construis des usines géantes sur une planète alien. L'automatisation poussée à l'extrême."},
+      {name:"Palworld",platforms:["PC","Xbox"],video:"https://www.youtube.com/watch?v=0lamUMCCR2I",desc:"Capture des créatures et construis une base avec elles. Survie, craft et combats mélangés."},
+    ]
+  },
+  SPORTIF: {
+    name: "Le Sportif",
+    icon: '🏆',
+    grad: ['#55EFC4', '#00B894'],
+    gradDark: ['#006644', '#003d28'],
+    description: "Le foot, la course, le basket — tu veux reproduire les sensations du sport réel dans les jeux, avec la même adrénaline et la même compétition.",
+    traits: ['Compétitif', 'Réactif', 'Passionné', 'Régulier', 'Endurant'],
+    pourquoi: "Les jeux de sport et de course te donnent les mêmes émotions que le sport réel — mais depuis ton canapé.",
+    games: [
+      {name:"EA Sports FC 25",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=xTcQ5cBk_rw",desc:"Le foot vidéoludique de référence mondiale avec tous les clubs et joueurs officiels."},
+      {name:"Gran Turismo 7",platforms:["PS5","PS4"],video:"https://www.youtube.com/watch?v=FyK5Q5TDhd8",desc:"La simulation automobile ultime sur PlayStation. Des centaines de voitures, un réalisme époustouflant."},
+      {name:"NBA 2K25",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=PbYp-LyiJKI",desc:"Le basket le plus réaliste du marché avec un mode carrière immersif et des graphismes de folie."},
+      {name:"F1 24",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=r_8GhbN3cik",desc:"Vis la saison de Formule 1 de l'intérieur avec un mode carrière poussé et des circuits officiels."},
+    ]
+  },
+  HORREUR: {
+    name: "L'Amateur d'Horreur",
+    icon: '👻',
+    grad: ['#636E72', '#2D3436'],
+    gradDark: ['#1a1a2e', '#0d0d1a'],
+    description: "Tu kiffes avoir peur. La tension, les jump scares, l'atmosphère oppressante — tu cherches la montée d'adrénaline que seul l'horreur peut donner.",
+    traits: ['Courageux', 'Curieux', 'Adrénaline', 'Immersif', 'Nerveux'],
+    pourquoi: "Les jeux d'horreur et de survie te plongent dans une tension permanente — chaque bruit peut être le dernier.",
+    games: [
+      {name:"Resident Evil 4 Remake",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=aPGOMGSBJH4",desc:"Un chef-d'œuvre de l'horreur action, entièrement repensé avec un gameplay moderne et intense."},
+      {name:"Alan Wake 2",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=j7BRjM6SnJo",desc:"Un thriller psychologique sombre et atmosphérique, entre réalité et cauchemar."},
+      {name:"Dead Space Remake",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=KKl1k-CaFXo",desc:"Horreur de survie dans une station spatiale. Tension maximale, ambiance terrifiante."},
+      {name:"Phasmophobia",platforms:["PC"],video:"https://www.youtube.com/watch?v=m4M6YEo6cTs",desc:"Chasse aux fantômes en co-op. Une atmosphère oppressante et des frissons garantis."},
+    ]
+  },
+  CASUAL: {
+    name: "Le Joueur Casual",
+    icon: '☕',
+    grad: ['#FD79A8', '#E84393'],
+    gradDark: ['#7a0040', '#4d0028'],
+    description: "Tu joues pour te détendre et passer un bon moment. Pas besoin d'être le meilleur — l'essentiel c'est le plaisir, le fun et la bonne humeur.",
+    traits: ['Détendu', 'Fun', 'Social', 'Adaptable', 'Créatif'],
+    pourquoi: "Les jeux cozy et casual offrent une expérience douce et accessible — idéaux pour décompresser après une longue journée.",
+    games: [
+      {name:"Stardew Valley",platforms:["PC","PS5","Xbox","Switch","Mobile"],video:"https://www.youtube.com/watch?v=ot7uXNQskhs",desc:"Gère ta ferme, rencontre des villageois, pêche et explore des mines. Zen et addictif."},
+      {name:"Animal Crossing: New Horizons",platforms:["Switch"],video:"https://www.youtube.com/watch?v=_3MHfAd6dBw",desc:"Crée ta propre île paradisiaque à ton rythme. Le jeu le plus relaxant qui existe."},
+      {name:"It Takes Two",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=3RB56VETgrg",desc:"Le meilleur jeu co-op à deux avec une histoire touchante et des mécaniques de jeu variées."},
+      {name:"Overcooked! 2",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=AheIiME0Tqc",desc:"Jeu de cuisine en co-op, parfait pour rire avec des amis ou en famille."},
+    ]
+  },
+  COOPÉRATIF: {
+    name: "Le Joueur Co-op",
+    icon: '🤝',
+    grad: ['#74B9FF', '#0984E3'],
+    gradDark: ['#054d87', '#022f55'],
+    description: "Jouer seul ? Pas pour toi. Tu trouves ça bien mieux à plusieurs — la coordination, l'entraide et le fun partagé sont ta raison de jouer.",
+    traits: ['Social', 'Coopératif', 'Loyal', 'Communicatif', 'Enjoué'],
+    pourquoi: "Les jeux co-op multijoueur t'offrent des moments épiques et des souvenirs avec tes amis qui durent.",
+    games: [
+      {name:"Deep Rock Galactic",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=3AcMqBvCDdQ",desc:"Nains spatiaux vs aliens en co-op 4 joueurs. L'un des meilleurs jeux coopératifs du marché."},
+      {name:"Helldivers 2",platforms:["PC","PS5"],video:"https://www.youtube.com/watch?v=CK7t1Q4oMHE",desc:"Combats co-op intenses contre des hordes d'aliens. Fun, chaotique et addictif."},
+      {name:"Sea of Thieves",platforms:["PC","Xbox"],video:"https://www.youtube.com/watch?v=MVaGREHhbU4",desc:"Pirate un bateau avec tes amis, explore les mers, trouve des trésors. Liberté totale."},
+      {name:"Phasmophobia",platforms:["PC"],video:"https://www.youtube.com/watch?v=m4M6YEo6cTs",desc:"Chasse aux fantômes en équipe avec des outils d'investigation. Fous rires et frissons garantis."},
+    ]
+  },
+  RÉTRO: {
+    name: "Le Gamer Exigeant",
+    icon: '💀',
+    grad: ['#b47dff', '#7B2FBE'],
+    gradDark: ['#3d1060', '#1e0840'],
+    description: "Tu cherches le défi pur. Les jeux difficiles, précis et qui te punissent sans pitié — tu les aimes pour la satisfaction énorme qu'ils procurent quand tu t'en sors.",
+    traits: ['Persévérant', 'Précis', 'Patient', 'Exigeant', 'Focalisé'],
+    pourquoi: "Les jeux indie exigeants et les roguelikes te donnent une satisfaction intense que les jeux faciles ne peuvent pas offrir.",
+    games: [
+      {name:"Hades II",platforms:["PC"],video:"https://www.youtube.com/watch?v=gL7u0BaNXek",desc:"Le roguelike ultime. Chaque mort t'apprend quelque chose. Fluide, stylé et addictif."},
+      {name:"Hollow Knight",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=UAO2urG23S4",desc:"Metroidvania exigeant dans un monde d'insectes magnifiquement dessiné. Un chef-d'œuvre."},
+      {name:"Celeste",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=70d9irlxiB4",desc:"Jeu de plateforme difficile avec un message profond sur le dépassement de soi."},
+      {name:"Dead Cells",platforms:["PC","PS5","Xbox","Switch","Mobile"],video:"https://www.youtube.com/watch?v=PvY-kUKBxuI",desc:"Roguelite action ultra fluide. Mourir est normal — progresser est inévitable."},
+    ]
+  },
+};
+
+/* ══════════════════════════════════════════════════
+   QUESTIONS
+══════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {id:1,cat:'style',emoji:'🎭',q:"Quelle ambiance vous attire le plus dans un jeu ?",sub:"Choisissez jusqu'à 2 réponses",type:'grid',max:2,
+   opts:[
+     {l:"Aventure épique",e:'🌍',s:{EXPLORATEUR:4,NARRATEUR:2}},
+     {l:"Compétition intense",e:'⚔️',s:{COMPÉTITEUR:4,SPORTIF:2}},
+     {l:"Construction / Créa",e:'🔨',s:{CRAFTEUR:4,CASUAL:1}},
+     {l:"Histoire / Émotions",e:'📖',s:{NARRATEUR:4,EXPLORATEUR:1}},
+     {l:"Terreur / Tension",e:'👻',s:{HORREUR:5,RÉTRO:1}},
+     {l:"Détente / Cozy",e:'☕',s:{CASUAL:5,COOPÉRATIF:1}},
+     {l:"Sport / Adrénaline",e:'🏆',s:{SPORTIF:4,COMPÉTITEUR:2}},
+     {l:"Stratégie / Réflexion",e:'🧠',s:{STRATÈGE:5,RÉTRO:2}},
+   ]},
+
+  {id:2,cat:'social',emoji:'👥',q:"Préférez-vous jouer seul ou avec d'autres ?",sub:"Votre mode de jeu préféré",type:'list',max:1,
+   opts:[
+     {l:"Seul, pour m'immerger totalement",e:'🎧',s:{EXPLORATEUR:3,NARRATEUR:3,HORREUR:3,RÉTRO:2}},
+     {l:"Avec des amis en co-op",e:'🤝',s:{COOPÉRATIF:5,CASUAL:3}},
+     {l:"En compétition contre d'autres joueurs",e:'⚡',s:{COMPÉTITEUR:5,SPORTIF:3}},
+     {l:"Les deux selon l'humeur",e:'⚖️',s:{COOPÉRATIF:2,CASUAL:2,EXPLORATEUR:1,COMPÉTITEUR:1}},
+   ]},
+
+  {id:3,cat:'style',emoji:'⏱️',q:"Combien de temps jouez-vous par session ?",sub:"En moyenne, une fois installé",type:'list',max:1,
+   opts:[
+     {l:"Moins d'1h — petites sessions",e:'⚡',s:{CASUAL:4,SPORTIF:2}},
+     {l:"1 à 2h — sessions équilibrées",e:'⏱️',s:{COMPÉTITEUR:2,COOPÉRATIF:2,RÉTRO:2}},
+     {l:"2 à 4h — sessions longues",e:'🌙',s:{EXPLORATEUR:3,NARRATEUR:3,STRATÈGE:3,CRAFTEUR:2}},
+     {l:"Plus de 4h — je me perds dedans",e:'🌅',s:{CRAFTEUR:4,STRATÈGE:3,EXPLORATEUR:2,NARRATEUR:2}},
+   ]},
+
+  {id:4,cat:'style',emoji:'💪',q:"Quel niveau de difficulté préférez-vous ?",sub:"Soyez honnête !",type:'list',max:1,
+   opts:[
+     {l:"Facile — je joue pour me détendre",e:'😌',s:{CASUAL:5,NARRATEUR:2}},
+     {l:"Normal — équilibré et accessible",e:'🙂',s:{EXPLORATEUR:2,COOPÉRATIF:2,SPORTIF:2}},
+     {l:"Difficile — j'aime le challenge",e:'😤',s:{COMPÉTITEUR:3,RÉTRO:3,HORREUR:2}},
+     {l:"Extrême — je cherche la perfection",e:'💀',s:{RÉTRO:5,COMPÉTITEUR:3,STRATÈGE:2}},
+   ]},
+
+  {id:5,cat:'plateforme',emoji:'🖥️',q:"Sur quelle(s) plateforme(s) jouez-vous ?",sub:"Choisissez jusqu'à 2 réponses",type:'grid',max:2,
+   opts:[
+     {l:"PC / ordinateur",e:'💻',s:{COMPÉTITEUR:2,STRATÈGE:2,CRAFTEUR:1}},
+     {l:"PlayStation",e:'🎮',s:{EXPLORATEUR:1,NARRATEUR:1,SPORTIF:1}},
+     {l:"Xbox",e:'🟢',s:{COOPÉRATIF:1,SPORTIF:1}},
+     {l:"Nintendo Switch",e:'🔴',s:{CASUAL:3,RÉTRO:2,STRATÈGE:1}},
+     {l:"Mobile",e:'📱',s:{CASUAL:4,EXPLORATEUR:1}},
+     {l:"Je n'ai pas encore de plateforme",e:'❓',s:{CASUAL:3,NARRATEUR:1}},
+   ]},
+
+  {id:6,cat:'style',emoji:'🎨',q:"Quel style visuel vous attire le plus ?",sub:"L'esthétique d'un jeu compte aussi",type:'grid',max:1,
+   opts:[
+     {l:"Réaliste / Cinématique",e:'🎬',s:{NARRATEUR:3,SPORTIF:3,HORREUR:2}},
+     {l:"Cartoon / Coloré",e:'🌈',s:{CASUAL:4,CRAFTEUR:2,COOPÉRATIF:2}},
+     {l:"Pixel art / Rétro",e:'👾',s:{RÉTRO:5,CASUAL:1}},
+     {l:"Fantastique / Épique",e:'⚔️',s:{EXPLORATEUR:3,STRATÈGE:2,NARRATEUR:2}},
+     {l:"Sombre / Atmosphérique",e:'🌑',s:{HORREUR:4,RÉTRO:2,NARRATEUR:1}},
+     {l:"Science-fiction / Futuriste",e:'🚀',s:{STRATÈGE:2,EXPLORATEUR:2,COMPÉTITEUR:1}},
+   ]},
+
+  {id:7,cat:'style',emoji:'🎯',q:"Qu'est-ce qui vous motive le plus dans un jeu ?",sub:"Choisissez jusqu'à 2 réponses",type:'list',max:2,
+   opts:[
+     {l:"Découvrir un monde immense et riche",e:'🗺️',s:{EXPLORATEUR:4,NARRATEUR:2}},
+     {l:"Battre mes adversaires et monter dans le classement",e:'🏆',s:{COMPÉTITEUR:5,SPORTIF:2}},
+     {l:"Construire et créer quelque chose",e:'🔨',s:{CRAFTEUR:5,CASUAL:1}},
+     {l:"Vivre une histoire et des émotions",e:'📖',s:{NARRATEUR:5,EXPLORATEUR:1}},
+     {l:"Résoudre des puzzles et réfléchir",e:'🧩',s:{STRATÈGE:4,RÉTRO:3}},
+     {l:"Partager des moments avec des amis",e:'👫',s:{COOPÉRATIF:5,CASUAL:3}},
+     {l:"Maîtriser chaque aspect d'un jeu",e:'⚡',s:{RÉTRO:4,COMPÉTITEUR:2}},
+   ]},
+
+  {id:8,cat:'style',emoji:'⚔️',q:"Quel type d'action préférez-vous dans un jeu ?",sub:"Votre gameplay idéal",type:'list',max:1,
+   opts:[
+     {l:"FPS / Tir rapide en temps réel",e:'🔫',s:{COMPÉTITEUR:5,HORREUR:1}},
+     {l:"Combats tactiques au tour par tour",e:'♟️',s:{STRATÈGE:5,RÉTRO:2}},
+     {l:"Exploration / Pas de combat",e:'🚶',s:{CASUAL:3,NARRATEUR:3,EXPLORATEUR:2}},
+     {l:"Combat d'action solo exigeant",e:'🗡️',s:{RÉTRO:4,EXPLORATEUR:3,HORREUR:2}},
+     {l:"Horreur et survie face au danger",e:'😱',s:{HORREUR:5,COOPÉRATIF:2}},
+     {l:"Sport ou course en temps réel",e:'🏎️',s:{SPORTIF:5,COMPÉTITEUR:2}},
+   ]},
+
+  {id:9,cat:'histoire',emoji:'📖',q:"Quelle place donne-vous au scénario ?",sub:"L'histoire dans un jeu, pour vous c'est...",type:'list',max:1,
+   opts:[
+     {l:"Essentiel — je joue pour l'histoire",e:'❤️',s:{NARRATEUR:5,EXPLORATEUR:2}},
+     {l:"Important — c'est un plus non négligeable",e:'👍',s:{EXPLORATEUR:3,RÉTRO:2,CRAFTEUR:1}},
+     {l:"Secondaire — c'est le gameplay qui prime",e:'🎮',s:{COMPÉTITEUR:3,SPORTIF:3,STRATÈGE:2}},
+     {l:"Peu importe — je crée ma propre aventure",e:'🎲',s:{CRAFTEUR:4,EXPLORATEUR:2}},
+   ]},
+
+  {id:10,cat:'social',emoji:'🌙',q:"Comment imaginez-vous une soirée jeu idéale ?",sub:"Choisissez jusqu'à 2 réponses",type:'list',max:2,
+   opts:[
+     {l:"Seul dans mon univers, casque sur les oreilles",e:'🎧',s:{NARRATEUR:3,EXPLORATEUR:3,HORREUR:2}},
+     {l:"En compétition en ligne contre des inconnus",e:'🌍',s:{COMPÉTITEUR:4,SPORTIF:3}},
+     {l:"En co-op avec des amis sur le même canapé",e:'🛋️',s:{CASUAL:4,COOPÉRATIF:3}},
+     {l:"En co-op avec des amis à distance",e:'🎙️',s:{COOPÉRATIF:4,COMPÉTITEUR:2}},
+     {l:"À construire ma base/ferme tranquillement",e:'🔨',s:{CRAFTEUR:5,CASUAL:2}},
+     {l:"À tester ma patience sur un jeu très difficile",e:'💀',s:{RÉTRO:5,STRATÈGE:2}},
+   ]},
+
+  {id:11,cat:'style',emoji:'🔧',q:"Quelle importance donnez-vous à la personnalisation ?",sub:"Créer votre personnage / base / équipe",type:'list',max:1,
+   opts:[
+     {l:"Fondamentale — je personnalise tout en détail",e:'✨',s:{CRAFTEUR:5,EXPLORATEUR:2,NARRATEUR:2}},
+     {l:"Importante — quelques options suffisent",e:'🎨',s:{EXPLORATEUR:2,COOPÉRATIF:2,CASUAL:2}},
+     {l:"Peu importante — je préfère jouer directement",e:'⚡',s:{COMPÉTITEUR:3,SPORTIF:3,RÉTRO:2}},
+   ]},
+
+  {id:12,cat:'style',emoji:'🗺️',q:"Quel type de monde préférez-vous ?",sub:"L'architecture du jeu",type:'list',max:1,
+   opts:[
+     {l:"Monde ouvert immense et libre",e:'🌍',s:{EXPLORATEUR:5,CRAFTEUR:3}},
+     {l:"Niveaux construits et linéaires",e:'🎯',s:{RÉTRO:4,HORREUR:3,NARRATEUR:2}},
+     {l:"Cartes/arènes multijoueur",e:'⚔️',s:{COMPÉTITEUR:4,COOPÉRATIF:3}},
+     {l:"Terrain de sport / circuit de course",e:'🏟️',s:{SPORTIF:5,COMPÉTITEUR:2}},
+     {l:"Donjon procédural qui change à chaque fois",e:'🎲',s:{RÉTRO:4,STRATÈGE:2,COOPÉRATIF:2}},
+   ]},
+
+  {id:13,cat:'social',emoji:'🏆',q:"Votre relation avec la compétition ?",sub:"Soyez honnête avec vous-même",type:'list',max:1,
+   opts:[
+     {l:"J'adore être classé et me mesurer aux autres",e:'🥇',s:{COMPÉTITEUR:5,SPORTIF:3}},
+     {l:"Je joue pour m'amuser, la victoire n'est pas essentielle",e:'😊',s:{CASUAL:4,COOPÉRATIF:3}},
+     {l:"Je me bats contre moi-même et mes limites",e:'💪',s:{RÉTRO:4,STRATÈGE:2}},
+     {l:"Je veux juste explorer et découvrir",e:'🚶',s:{EXPLORATEUR:4,NARRATEUR:3}},
+   ]},
+
+  {id:14,cat:'style',emoji:'🔄',q:"Qu'est-ce qui vous fait revenir dans un jeu ?",sub:"Choisissez jusqu'à 2 réponses",type:'list',max:2,
+   opts:[
+     {l:"Des mises à jour et du contenu régulier",e:'📦',s:{COMPÉTITEUR:3,COOPÉRATIF:3,CASUAL:2}},
+     {l:"Une histoire que je veux absolument finir",e:'📖',s:{NARRATEUR:5,EXPLORATEUR:2}},
+     {l:"Des constructions et projets à améliorer",e:'🔨',s:{CRAFTEUR:5,STRATÈGE:2}},
+     {l:"Le frisson et la tension permanente",e:'😱',s:{HORREUR:5,RÉTRO:2}},
+     {l:"Des défis à maîtriser à la perfection",e:'💀',s:{RÉTRO:5,COMPÉTITEUR:2}},
+     {l:"Jouer avec mes amis et rigoler",e:'😂',s:{COOPÉRATIF:4,CASUAL:4}},
+     {l:"Progresser dans mon niveau de jeu",e:'📈',s:{COMPÉTITEUR:4,SPORTIF:3}},
+   ]},
+
+  {id:15,cat:'budget',emoji:'💰',q:"Quel budget consacrez-vous aux jeux ?",sub:"Votre habitude d'achat",type:'list',max:1,
+   opts:[
+     {l:"Jeux gratuits uniquement",e:'🆓',s:{CASUAL:3,COMPÉTITEUR:2,COOPÉRATIF:1}},
+     {l:"Petits prix — jeux indie moins de 20€",e:'💶',s:{RÉTRO:4,CASUAL:3}},
+     {l:"Un ou deux grands jeux par an",e:'🎁',s:{NARRATEUR:3,EXPLORATEUR:3,CRAFTEUR:2}},
+     {l:"J'achète régulièrement les nouvelles sorties",e:'🛒',s:{SPORTIF:3,STRATÈGE:3,COMPÉTITEUR:2}},
+   ]},
+];
+
+const CAT_GRADIENTS = {
+  style:     '#1a0a3a,#0d1b4a',
+  social:    '#0d1b4a,#07071a',
+  histoire:  '#1a0a3a,#07071a',
+  plateforme:'#0d1b4a,#1a0a3a',
+  budget:    '#07071a,#1a0a3a',
+};
+const CAT_LABELS = {
+  style:     '🎮 Style de jeu',
+  social:    '👥 Mode de jeu',
+  histoire:  '📖 Scénario',
+  plateforme:'🖥️ Plateforme',
+  budget:    '💰 Budget',
+};
+
+/* ══════════════════════════════════════════════════
+   ÉTAT
+══════════════════════════════════════════════════ */
+let currentQ = 0;
+let answers  = [];
+let selected = [];
+
+/* ══════════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════════ */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ══════════════════════════════════════════════════
+   COMPTEUR FIREBASE
+══════════════════════════════════════════════════ */
+const DB_URL = 'https://declic-stef64-default-rtdb.firebaseio.com';
+const COUNTER_KEY = 'declic-jeuvideo-starts';
+
+async function loadCounter(){
+  try{
+    const r = await fetch(`${DB_URL}/${COUNTER_KEY}.json`);
+    const val = await r.json();
+    const el = document.getElementById('counter-display');
+    if(el) el.textContent = val ? Number(val).toLocaleString('fr-FR') : '0';
+  }catch(e){
+    const el = document.getElementById('counter-display');
+    if(el) el.textContent = '—';
+  }
+}
+
+async function incrementCounter(){
+  try{
+    const r = await fetch(`${DB_URL}/${COUNTER_KEY}.json`);
+    const val = (await r.json()) || 0;
+    await fetch(`${DB_URL}/${COUNTER_KEY}.json`,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(val + 1)
+    });
+  }catch(e){}
+}
+
+window.addEventListener('load', loadCounter);
+
+/* ══════════════════════════════════════════════════
+   QUIZ
+══════════════════════════════════════════════════ */
+function startQuiz(){
+  currentQ=0; answers=[]; selected=[];
+  incrementCounter();
+  showScreen('quiz');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[currentQ];
+  selected = [];
+  const g = CAT_GRADIENTS[q.cat] || '#1a0a3a,#07071a';
+  document.getElementById('screen-quiz').style.background =
+    `linear-gradient(160deg,${g.split(',')[0]} 0%,${g.split(',')[1]} 100%)`;
+
+  const pct = ((currentQ+1)/QUESTIONS.length*100).toFixed(0);
+  document.getElementById('pFill').style.width = pct+'%';
+  document.getElementById('pLabel').textContent = `${currentQ+1} / ${QUESTIONS.length}`;
+
+  const isGrid = q.type === 'grid';
+  const maxTxt = q.max === 1 ? '1 seule réponse' : `Choisissez jusqu'à ${q.max} réponses`;
+  const dots = Array.from({length:q.max},(_,i)=>`<span class="dot" id="dot-${i}"></span>`).join('');
+
+  const body = document.getElementById('quiz-body');
+  body.innerHTML = `
+    <div class="cat-badge">${CAT_LABELS[q.cat]}</div>
+    <span class="q-emoji">${q.emoji}</span>
+    <p class="q-text">${q.q}</p>
+    <div class="select-counter" id="sel-counter">
+      <span id="counter-txt">${maxTxt}</span>
+      ${q.max>1?`<div class="counter-dots">${dots}</div>`:''}
+    </div>
+    <div class="${isGrid?'opts-grid':'opts-list'}" id="opts"></div>
+    <div class="next-wrap">
+      <button class="next-btn" id="next-btn" onclick="validateAndNext()">
+        <span class="next-inner">
+          ${currentQ < QUESTIONS.length-1 ? 'Question suivante →' : 'Voir mes jeux idéaux 🎮'}
+        </span>
+      </button>
+    </div>
+  `;
+
+  const container = document.getElementById('opts');
+  q.opts.forEach((opt,i)=>{
+    const el = document.createElement('div');
+    el.className = isGrid ? 'opt-grid' : 'opt';
+    el.id = 'opt-'+i;
+    if(opt.desc){
+      el.innerHTML = `
+        <span class="opt-emoji">${opt.e}</span>
+        <div class="opt-text-block">
+          <span class="opt-label">${opt.l}</span>
+          <span class="opt-desc">${opt.desc}</span>
+        </div>
+        <div class="check"><span class="check-num"></span></div>`;
+    } else {
+      el.innerHTML = `
+        <span class="opt-emoji">${opt.e}</span>
+        <span class="opt-label">${opt.l}</span>
+        <div class="check"><span class="check-num"></span></div>`;
+    }
+    el.onclick = ()=>toggleOption(i, q);
+    container.appendChild(el);
+  });
+}
+
+function toggleOption(idx, q){
+  const el = document.getElementById('opt-'+idx);
+  const alreadyIdx = selected.findIndex(s=>s.idx===idx);
+  if(alreadyIdx !== -1){
+    selected.splice(alreadyIdx,1);
+    el.classList.remove('chosen','second');
+    el.querySelector('.check-num').textContent = '';
+    refreshAllOpts(q);
+  } else {
+    if(selected.length >= q.max) return;
+    const rank = selected.length;
+    selected.push({idx, opt:q.opts[idx], rank});
+    el.classList.add('chosen');
+    if(rank===1) el.classList.add('second');
+    el.querySelector('.check-num').textContent = q.max>1 ? (rank+1) : '✓';
+    refreshAllOpts(q);
+  }
+  updateSelectCounter(q);
+  updateNextBtn();
+}
+
+function refreshAllOpts(q){
+  const full = selected.length >= q.max;
+  q.opts.forEach((_,i)=>{
+    const el = document.getElementById('opt-'+i);
+    if(!el) return;
+    const isChosen = selected.some(s=>s.idx===i);
+    el.classList.toggle('disabled', full && !isChosen);
+  });
+}
+
+function updateSelectCounter(q){
+  const counter = document.getElementById('sel-counter');
+  const txt = document.getElementById('counter-txt');
+  const n = selected.length;
+  if(q.max===1){
+    txt.textContent = n===0 ? '1 seule réponse' : '✓ Sélectionné';
+  } else {
+    txt.textContent = n===0 ? `Choisissez jusqu'à ${q.max} réponses`
+      : n < q.max ? `${n}/${q.max} — ou continuer`
+      : `${q.max}/${q.max} — Maximum atteint !`;
+    for(let i=0;i<q.max;i++){
+      const dot = document.getElementById('dot-'+i);
+      if(dot) dot.className = 'dot'+(i<n?' filled':'')+(n>=q.max&&i<n?' gold':'');
+    }
+    if(n>=q.max) counter.classList.add('full');
+    else counter.classList.remove('full');
+  }
+}
+
+function updateNextBtn(){
+  const btn = document.getElementById('next-btn');
+  btn.classList.toggle('visible', selected.length > 0);
+}
+
+function validateAndNext(){
+  if(selected.length===0) return;
+  answers.push(selected.map(s=>s.opt));
+  if(currentQ < QUESTIONS.length-1){
+    currentQ++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function goBack(){
+  if(currentQ===0){ showScreen('welcome'); return; }
+  answers.pop();
+  currentQ--;
+  renderQuestion();
+}
+
+/* ══════════════════════════════════════════════════
+   ALGORITHME
+══════════════════════════════════════════════════ */
+function computeScores(){
+  const totals={};
+  answers.forEach(qAnswers=>{
+    if(!Array.isArray(qAnswers)) return;
+    qAnswers.forEach(opt=>{
+      if(!opt||!opt.s) return;
+      Object.entries(opt.s).forEach(([cat,pts])=>{
+        totals[cat]=(totals[cat]||0)+pts;
+      });
+    });
+  });
+  return totals;
+}
+
+function getTopProfiles(n=3){
+  const scores = computeScores();
+  const max = Math.max(...Object.values(scores));
+  const fingerprint = answers.flat().reduce((acc,opt)=>{
+    if(!opt||!opt.l) return acc;
+    for(let i=0;i<opt.l.length;i++) acc += opt.l.charCodeAt(i);
+    return acc;
+  },0);
+  return Object.entries(scores)
+    .sort(([,a],[,b])=>b-a)
+    .slice(0,n)
+    .map(([cat,score])=>{
+      const data = PROFILES[cat];
+      if(!data) return null;
+      const gameIndex = fingerprint % data.games.length;
+      return {cat, score, compat: max>0?Math.round(score/max*100):0, game: data.games[gameIndex], ...data};
+    }).filter(Boolean);
+}
+
+/* ══════════════════════════════════════════════════
+   RÉSULTATS
+══════════════════════════════════════════════════ */
+const RANK_COLORS=['#FFD700','#C0C0C0','#CD7F32'];
+const RANK_LABELS=['1er profil','2e profil','3e profil'];
+
+function showResults(){
+  showScreen('results');
+  const profiles = getTopProfiles(3);
+  const el = document.getElementById('results-inner');
+
+  const cards = profiles.map((p,i)=>`
+    <div class="career-card" onclick="toggleCard('detail-${i}','hint-${i}')">
+      <div class="career-inner" style="background:linear-gradient(135deg,${p.gradDark[0]},${p.gradDark[1]})">
+        <div class="card-header">
+          <span class="rank-badge" style="background:${RANK_COLORS[i]}">${RANK_LABELS[i]}</span>
+          <span class="compat-badge">${p.compat}% match</span>
+        </div>
+        <div class="card-main">
+          <span class="card-icon">${p.icon}</span>
+          <div>
+            <p class="card-cat">Profil gamer</p>
+            <p class="card-job">${p.name}</p>
+          </div>
+        </div>
+        <p class="card-desc">${p.description}</p>
+        <div id="detail-${i}" style="display:none">
+          <div class="card-details">
+            <div class="detail-row">
+              <span class="detail-icon">🎮</span>
+              <div>
+                <p class="detail-lbl">Jeu recommandé</p>
+                <p class="detail-val">${p.game.name}</p>
+                <p style="color:rgba(255,255,255,.6);font-size:13px;margin-top:4px">${p.game.desc}</p>
+              </div>
+            </div>
+            <div class="detail-row">
+              <span class="detail-icon">🖥️</span>
+              <div>
+                <p class="detail-lbl">Plateformes compatibles</p>
+                <div class="platform-row">${p.game.platforms.map(pl=>`<span class="platform-chip">${pl}</span>`).join('')}</div>
+              </div>
+            </div>
+            <a class="video-btn" href="${p.game.video}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+              <span style="font-size:22px">▶️</span>
+              <span>Voir la vidéo de démonstration</span>
+            </a>
+            <div class="detail-row">
+              <span class="detail-icon">💡</span>
+              <div>
+                <p class="detail-lbl">Pourquoi ce jeu ?</p>
+                <p class="detail-val">${p.pourquoi}</p>
+              </div>
+            </div>
+            <div class="detail-row">
+              <span class="detail-icon">⭐</span>
+              <div>
+                <p class="detail-lbl">Traits du gamer</p>
+                <div class="trait-row">${p.traits.map(t=>`<span class="trait-chip">${t}</span>`).join('')}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="tap-hint" id="hint-${i}">▼ Voir le jeu recommandé</p>
+      </div>
+    </div>
+  `).join('');
+
+  el.innerHTML = `
+    <div class="res-header">
+      <span class="res-emoji">🎮</span>
+      <h2 class="res-title">Votre profil gamer</h2>
+      <p class="res-sub">Voici les 3 types de jeux qui vous correspondent le mieux — cliquez sur une carte pour découvrir le jeu recommandé</p>
+    </div>
+    ${cards}
+    <div class="advice-box">
+      <p class="advice-title">💡 Conseil</p>
+      <p class="advice-text">La plupart de ces jeux proposent une version d'essai gratuite ou sont disponibles sur des abonnements comme le Game Pass (Xbox/PC) ou le PlayStation Plus. N'hésitez pas à essayer avant d'acheter !</p>
+    </div>
+    <div class="action-btns">
+      <button class="act-btn" onclick="shareResults(${JSON.stringify(profiles.map(p=>p.game.name))})">
+        <span class="act-inner purple">📤&nbsp; Partager mes résultats</span>
+      </button>
+      <button class="act-btn" onclick="startQuiz()">
+        <span class="act-inner blue">🔄&nbsp; Refaire le test</span>
+      </button>
+    </div>
+    <button class="home-link" onclick="showScreen('welcome')">← Accueil</button>
+    <p class="res-footer">Déclic JeuVidéo · Créé par Stef64</p>
+  `;
+}
+
+function toggleCard(detailId, hintId){
+  const d = document.getElementById(detailId);
+  const h = document.getElementById(hintId);
+  const open = d.style.display==='block';
+  d.style.display = open?'none':'block';
+  h.textContent = open ? '▼ Voir le jeu recommandé' : '▲ Réduire';
+}
+
+async function shareResults(names){
+  const text = `J'ai découvert mes jeux vidéo idéaux avec Déclic JeuVidéo : ${names[0]} ! Fais le test toi aussi 🎮`;
+  if(navigator.share){
+    try{ await navigator.share({title:'Déclic JeuVidéo', text}); } catch(_){}
+  } else {
+    await navigator.clipboard.writeText(text).catch(()=>{});
+    alert('Résultats copiés dans le presse-papier !');
+  }
+}
+</script>
+</body>
+</html>
