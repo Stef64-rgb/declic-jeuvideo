@@ -201,10 +201,14 @@ const PROFILES = {
     traits: ['Curieux', 'Patient', 'Immersif', 'Aventurier', 'Observateur'],
     pourquoi: 'Les mondes ouverts et les RPG sont ta zone de confort — chaque heure de jeu est une nouvelle découverte.',
     games: [
-      {name:"Elden Ring",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=E3Huy2cdih0",desc:"Un monde sombre et sublime à explorer librement, parsemé de secrets et de boss légendaires."},
-      {name:"The Legend of Zelda: Tears of the Kingdom",platforms:["Switch"],video:"https://www.youtube.com/watch?v=uHGShqcAHlQ",desc:"Un monde ouvert vertical et aérien où la créativité n'a aucune limite."},
-      {name:"Ghost of Tsushima",platforms:["PS5","PC"],video:"https://www.youtube.com/watch?v=iqysmS4lxwQ",desc:"Un Japon féodal magnifique à explorer en samouraï, entre forêts de bambou et villages en feu."},
-      {name:"Genshin Impact",platforms:["PC","PS5","Mobile","Switch"],video:"https://www.youtube.com/watch?v=5kdU1Zb6gJI",desc:"Un RPG gratuit avec un monde immense et coloré à explorer seul ou en co-op."},
+      {name:"Elden Ring",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=E3Huy2cdih0",tags:['open-world','solo','difficile','fantastique','action'],desc:"Monde ouvert sombre et sublime à explorer librement. Des secrets partout, des boss légendaires."},
+      {name:"Red Dead Redemption 2",platforms:["PC","PS4","Xbox One"],video:"https://www.youtube.com/watch?v=eaW0tYpxyp0",tags:['open-world','solo','realiste','histoire','longue-session'],desc:"Le Far West le plus vivant jamais créé. Une histoire épique et un monde d'une richesse incroyable."},
+      {name:"No Man's Sky",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=nLtmEjqzg7M",tags:['open-world','scifi','coop','craft','longue-session'],desc:"Explore des milliards de planètes générées aléatoirement dans un univers infini. Seul ou en co-op."},
+      {name:"Cyberpunk 2077",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=8X2kIfS6fb8",tags:['open-world','solo','scifi','histoire','realiste'],desc:"Night City en 2077 : une mégalopole vivante regorgeant de secrets, missions et personnages."},
+      {name:"Kingdom Come: Deliverance II",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=8S0r3MRGrVM",tags:['open-world','solo','realiste','histoire','medieval'],desc:"RPG médiéval ultra réaliste. Pas de magie — juste l'histoire vraie du XVe siècle."},
+      {name:"Ghost of Tsushima",platforms:["PS5","PC"],video:"https://www.youtube.com/watch?v=iqysmS4lxwQ",tags:['open-world','solo','action','realiste','playstation'],desc:"Un Japon féodal magnifique à explorer en samouraï, entre forêts de bambou et villages en feu."},
+      {name:"ARK: Survival Ascended",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=qZl4PVzOhC8",tags:['open-world','survie','craft','coop','fps','difficile'],desc:"Apprivoise des dinosaures, construis ta base et explore un monde préhistorique immense. Solo ou multi."},
+      {name:"Starfield",platforms:["PC","Xbox"],video:"https://www.youtube.com/watch?v=84GNk2JOXBM",tags:['open-world','solo','scifi','histoire','longue-session'],desc:"Explore des centaines de planètes dans un univers spatial immense. RPG science-fiction de Bethesda."},
     ]
   },
   COMPÉTITEUR: {
@@ -216,10 +220,14 @@ const PROFILES = {
     traits: ['Compétitif', 'Réactif', 'Focalisé', 'Stratégique', 'Persévérant'],
     pourquoi: "Les jeux en ligne compétitifs et les FPS te font vibrer — la victoire s'arrache, elle ne se donne pas.",
     games: [
-      {name:"Valorant",platforms:["PC"],video:"https://www.youtube.com/watch?v=e_E9W2vsRbQ",desc:"Un FPS tactique 5v5 avec des agents aux capacités uniques. Vise juste, joue en équipe."},
-      {name:"Counter-Strike 2",platforms:["PC"],video:"https://www.youtube.com/watch?v=rJMnqIyBEA8",desc:"Le FPS compétitif de référence depuis 20 ans. Simple à comprendre, impossible à maîtriser."},
-      {name:"Apex Legends",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=innmNewjkuk",desc:"Un battle royale nerveux avec des légendes aux pouvoirs uniques et un gameplay hyper fluide."},
-      {name:"Rocket League",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=EKeJlhHhLnE",desc:"Du foot avec des voitures volantes. Facile à apprendre, des années à maîtriser."},
+      {name:"Counter-Strike 2",platforms:["PC"],video:"https://www.youtube.com/watch?v=rJMnqIyBEA8",tags:['fps','competitif','pc','gratuit','solo','difficile'],desc:"Le FPS compétitif de référence depuis 20 ans. Gratuit, simple à comprendre, impossible à maîtriser."},
+      {name:"Apex Legends",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=innmNewjkuk",tags:['fps','battle-royale','gratuit','competitif','coop'],desc:"Battle royale nerveux et fluide avec des légendes aux pouvoirs uniques. Gratuit."},
+      {name:"Marvel Rivals",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=5JHTDaLSi8g",tags:['fps','competitif','gratuit','coop','cartoon'],desc:"Shooter 6v6 avec les héros Marvel. Ultra dynamique, gratuit et incroyablement fun."},
+      {name:"Rainbow Six Siege",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=6wBNSMDMSfM",tags:['fps','competitif','tactique','difficile','realiste'],desc:"Le FPS tactique le plus exigeant du marché. Chaque partie est un puzzle à résoudre sous pression."},
+      {name:"Valorant",platforms:["PC"],video:"https://www.youtube.com/watch?v=e_E9W2vsRbQ",tags:['fps','competitif','pc','gratuit','tactique'],desc:"FPS tactique 5v5 avec des agents aux capacités uniques. Précision, stratégie, travail d'équipe. Gratuit."},
+      {name:"THE FINALS",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=xDWCe_52yy0",tags:['fps','competitif','gratuit','realiste','destruction'],desc:"Shooter compétitif avec des environnements 100% destructibles. Chaos total et fun garanti. Gratuit."},
+      {name:"PUBG: Battlegrounds",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=kHSPeJSFNxQ",tags:['fps','battle-royale','competitif','realiste','solo'],desc:"Le battle royale original. 100 joueurs, une zone qui rétrécit, un seul survivant. Tension maximale."},
+      {name:"Warframe",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=oP1TZ74MPHI",tags:['fps','coop','gratuit','scifi','action'],desc:"Shooter co-op gratuit ultra fluide avec des ninjas spatiaux. Des centaines d'heures de contenu."},
     ]
   },
   STRATÈGE: {
@@ -231,10 +239,14 @@ const PROFILES = {
     traits: ['Analytique', 'Patient', 'Méthodique', 'Tactique', 'Prévoyant'],
     pourquoi: "Les jeux de stratégie et de gestion te permettent d'exercer ton cerveau — chaque décision compte.",
     games: [
-      {name:"Civilization VII",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=V3kYFAKi5kI",desc:"Construis la civilisation la plus puissante de l'histoire. Chaque partie est unique."},
-      {name:"Age of Empires IV",platforms:["PC","Xbox"],video:"https://www.youtube.com/watch?v=V2-GpnlVbU0",desc:"Stratégie en temps réel historique avec une profondeur tactique et des campagnes épiques."},
-      {name:"Stellaris",platforms:["PC"],video:"https://www.youtube.com/watch?v=JkiSZpnNW0k",desc:"Construis un empire galactique et domine l'univers. Une profondeur infinie."},
-      {name:"XCOM 2",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=XR4OhNmGqFk",desc:"Stratégie au tour par tour où chaque erreur peut coûter un soldat. Intense et addictif."},
+      {name:"Crusader Kings III",platforms:["PC"],video:"https://www.youtube.com/watch?v=yKwlv_QFgqs",tags:['strategie','gestion','solo','medieval','longue-session','histoire'],desc:"Incarne un monarque médiéval et bâtis une dynastie. Politique, guerre, trahisons — tout est possible."},
+      {name:"Hearts of Iron IV",platforms:["PC"],video:"https://www.youtube.com/watch?v=K8t4yjFh63I",tags:['strategie','gestion','solo','guerre','realiste','longue-session'],desc:"Stratégie militaire mondiale de la Seconde Guerre Mondiale. Complexe, profond, addictif."},
+      {name:"Civilization VII",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=V3kYFAKi5kI",tags:['strategie','tour-par-tour','solo','gestion','longue-session'],desc:"Construis la civilisation la plus puissante de l'histoire, de l'Antiquité à l'ère moderne."},
+      {name:"Stellaris",platforms:["PC"],video:"https://www.youtube.com/watch?v=JkiSZpnNW0k",tags:['strategie','gestion','scifi','solo','longue-session','open-world'],desc:"Stratégie 4X spatiale où tu bâtis un empire galactique. Une profondeur quasi infinie."},
+      {name:"RimWorld",platforms:["PC"],video:"https://www.youtube.com/watch?v=UTgMNAFKNSc",tags:['strategie','gestion','solo','survie','longue-session','craft'],desc:"Gère une colonie de survivants sur une planète hostile. Chaque partie génère une histoire unique."},
+      {name:"Factorio",platforms:["PC"],video:"https://www.youtube.com/watch?v=J8SBp4SyvLc",tags:['strategie','gestion','solo','craft','pc','longue-session'],desc:"Construis et automatise une usine géante sur une planète alien. Le jeu le mieux noté sur Steam."},
+      {name:"XCOM 2",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=XR4OhNmGqFk",tags:['strategie','tour-par-tour','solo','difficile','scifi'],desc:"Stratégie au tour par tour où chaque erreur peut coûter un soldat. Intense et addictif."},
+      {name:"Manor Lords",platforms:["PC"],video:"https://www.youtube.com/watch?v=Eq7gA1GHZLY",tags:['strategie','gestion','solo','medieval','realiste'],desc:"Construis et gère une cité médiévale réaliste. Économie, batailles, survie de ta population."},
     ]
   },
   NARRATEUR: {
@@ -246,10 +258,14 @@ const PROFILES = {
     traits: ['Émotif', 'Immersif', 'Curieux', 'Empathique', 'Créatif'],
     pourquoi: "Les RPG narratifs et les jeux d'aventure te permettent de vivre des histoires impossibles dans la réalité.",
     games: [
-      {name:"Baldur's Gate 3",platforms:["PC","PS5"],video:"https://www.youtube.com/watch?v=pF97M_JJCjk",desc:"Le RPG ultime avec une liberté de narration totale. Chaque choix change l'histoire."},
-      {name:"The Witcher 3",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=c0i88t0Kacs",desc:"Geralt de Riv dans un monde médiéval-fantastique riche, avec des quêtes profondément humaines."},
-      {name:"Cyberpunk 2077",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=8X2kIfS6fb8",desc:"Night City en 2077 : une ville vivante, une histoire intense, des choix qui comptent vraiment."},
-      {name:"Detroit: Become Human",platforms:["PC","PS4"],video:"https://www.youtube.com/watch?v=bQEe4eEcq_Q",desc:"Un film interactif où chaque décision fait bifurquer l'histoire. Bouleversant."},
+      {name:"Baldur's Gate 3",platforms:["PC","PS5"],video:"https://www.youtube.com/watch?v=pF97M_JJCjk",tags:['histoire','rpg','solo','coop','fantastique','longue-session'],desc:"Le RPG ultime avec une liberté de narration totale. Jeu de l'année 2023, noté Overwhelmingly Positive."},
+      {name:"The Witcher 3",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=c0i88t0Kacs",tags:['histoire','rpg','open-world','solo','fantastique','longue-session'],desc:"Geralt de Riv dans un monde médiéval-fantastique riche, avec des quêtes profondément humaines."},
+      {name:"Disco Elysium",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=NRMtgfpOvTE",tags:['histoire','rpg','solo','texte','courte-session'],desc:"RPG textuel révolutionnaire. Une enquête dans un monde étrange. Écriture d'une qualité littéraire rare."},
+      {name:"Detroit: Become Human",platforms:["PC","PS4"],video:"https://www.youtube.com/watch?v=bQEe4eEcq_Q",tags:['histoire','solo','realiste','scifi','courte-session','playstation'],desc:"Film interactif sur les androïdes et l'humanité. Chaque décision fait bifurquer l'histoire."},
+      {name:"Kingdom Come: Deliverance II",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=8S0r3MRGrVM",tags:['histoire','rpg','open-world','solo','realiste','medieval'],desc:"Une aventure médiévale historique palpitante. Des personnages marquants et une narration d'exception."},
+      {name:"What Remains of Edith Finch",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=bsC8io4w1sY",tags:['histoire','solo','courte-session','emotion','indie'],desc:"Explore la maison d'une famille maudite. Courte, unique et émotionnellement très puissante."},
+      {name:"Cyberpunk 2077",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=8X2kIfS6fb8",tags:['histoire','rpg','open-world','solo','scifi','realiste'],desc:"Night City en 2077 : une histoire intense, des choix qui comptent vraiment dans une ville vivante."},
+      {name:"Red Dead Redemption 2",platforms:["PC","PS4","Xbox One"],video:"https://www.youtube.com/watch?v=eaW0tYpxyp0",tags:['histoire','rpg','open-world','solo','realiste','longue-session'],desc:"L'une des meilleures histoires jamais racontées en jeu vidéo, dans le Far West le plus vivant jamais créé."},
     ]
   },
   CRAFTEUR: {
@@ -261,10 +277,14 @@ const PROFILES = {
     traits: ['Créatif', 'Organisé', 'Patient', 'Perfectionniste', 'Autonome'],
     pourquoi: "Les jeux de construction et de survie te donnent une liberté totale pour exprimer ta créativité.",
     games: [
-      {name:"Minecraft",platforms:["PC","PS5","Xbox","Switch","Mobile"],video:"https://www.youtube.com/watch?v=MmB9b5njVbA",desc:"Le bac à sable ultime. Construis, explore, survie — tout est possible dans un monde infini."},
-      {name:"Valheim",platforms:["PC"],video:"https://www.youtube.com/watch?v=sRFjQ7b2C5Q",desc:"Survie et construction dans un monde Viking mythologique. Magnifique et profond."},
-      {name:"Satisfactory",platforms:["PC"],video:"https://www.youtube.com/watch?v=rk3IOoyfGQ0",desc:"Construis des usines géantes sur une planète alien. L'automatisation poussée à l'extrême."},
-      {name:"Palworld",platforms:["PC","Xbox"],video:"https://www.youtube.com/watch?v=0lamUMCCR2I",desc:"Capture des créatures et construis une base avec elles. Survie, craft et combats mélangés."},
+      {name:"Minecraft",platforms:["PC","PS5","Xbox","Switch","Mobile"],video:"https://www.youtube.com/watch?v=MmB9b5njVbA",tags:['craft','open-world','solo','coop','mobile','switch','casual'],desc:"Le bac à sable ultime. Construis, explore, survie — tout est possible dans un monde infini."},
+      {name:"Satisfactory",platforms:["PC"],video:"https://www.youtube.com/watch?v=rk3IOoyfGQ0",tags:['craft','gestion','solo','pc','scifi','longue-session'],desc:"Construis des usines géantes sur une planète alien. L'automatisation industrielle poussée à l'extrême."},
+      {name:"ARK: Survival Ascended",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=qZl4PVzOhC8",tags:['craft','survie','open-world','coop','fps','difficile','longue-session'],desc:"Apprivoise des dinosaures, construis ta base et explore un monde préhistorique immense. Solo ou multi."},
+      {name:"Sons of the Forest",platforms:["PC"],video:"https://www.youtube.com/watch?v=0KNs4MCY07I",tags:['craft','survie','solo','coop','horreur','realiste'],desc:"Survie et construction dans une forêt peuplée de mutants. Angoissant, beau et très bien noté."},
+      {name:"Enshrouded",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=B3zyB_cZHv0",tags:['craft','survie','open-world','coop','fantastique','action'],desc:"RPG survie-construction dans un monde fantastique entouré d'un brouillard mortel. Magnifique."},
+      {name:"Palworld",platforms:["PC","Xbox"],video:"https://www.youtube.com/watch?v=0lamUMCCR2I",tags:['craft','survie','open-world','coop','cartoon','action'],desc:"Capture des créatures pour t'aider à construire ta base. Survie, craft et combats mélangés."},
+      {name:"Valheim",platforms:["PC"],video:"https://www.youtube.com/watch?v=sRFjQ7b2C5Q",tags:['craft','survie','open-world','solo','coop','longue-session'],desc:"Survie et construction dans un monde Viking mythologique. Immense succès indie, noté Very Positive."},
+      {name:"Rust",platforms:["PC"],video:"https://www.youtube.com/watch?v=LGcaB6vrK7w",tags:['craft','survie','competitif','coop','fps','difficile','realiste'],desc:"Survie multi-joueurs brutal. Construis une base, forme des alliances, survie contre les autres joueurs."},
     ]
   },
   SPORTIF: {
@@ -276,10 +296,14 @@ const PROFILES = {
     traits: ['Compétitif', 'Réactif', 'Passionné', 'Régulier', 'Endurant'],
     pourquoi: "Les jeux de sport et de course te donnent les mêmes émotions que le sport réel — mais depuis ton canapé.",
     games: [
-      {name:"EA Sports FC 25",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=xTcQ5cBk_rw",desc:"Le foot vidéoludique de référence mondiale avec tous les clubs et joueurs officiels."},
-      {name:"Gran Turismo 7",platforms:["PS5","PS4"],video:"https://www.youtube.com/watch?v=FyK5Q5TDhd8",desc:"La simulation automobile ultime sur PlayStation. Des centaines de voitures, un réalisme époustouflant."},
-      {name:"NBA 2K25",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=PbYp-LyiJKI",desc:"Le basket le plus réaliste du marché avec un mode carrière immersif et des graphismes de folie."},
-      {name:"F1 24",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=r_8GhbN3cik",desc:"Vis la saison de Formule 1 de l'intérieur avec un mode carrière poussé et des circuits officiels."},
+      {name:"EA Sports FC 26",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=xTcQ5cBk_rw",tags:['sport','foot','competitif','realiste','switch','playstation'],desc:"La référence mondiale du foot vidéoludique avec tous les clubs et joueurs officiels sous licence."},
+      {name:"F1 25",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=r_8GhbN3cik",tags:['sport','course','competitif','realiste','playstation'],desc:"Vis la saison de Formule 1 de l'intérieur avec un mode carrière poussé et tous les circuits officiels."},
+      {name:"Forza Horizon 5",platforms:["PC","Xbox"],video:"https://www.youtube.com/watch?v=FvGcF3wQRiQ",tags:['sport','course','open-world','realiste','casual'],desc:"Course en monde ouvert au Mexique. Des centaines de voitures, graphismes époustouflants, fun garanti."},
+      {name:"NBA 2K26",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=PbYp-LyiJKI",tags:['sport','basket','competitif','realiste','playstation'],desc:"La simulation de basket la plus réaliste avec un mode carrière immersif et une gestion de franchise."},
+      {name:"Football Manager 26",platforms:["PC","Xbox"],video:"https://www.youtube.com/watch?v=8aCuQBZBSbk",tags:['sport','foot','gestion','solo','pc','longue-session'],desc:"Deviens entraîneur, gère ton club, recrute des joueurs et mène ton équipe au sommet."},
+      {name:"Rocket League",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=EKeJlhHhLnE",tags:['sport','competitif','gratuit','coop','switch','courte-session'],desc:"Du foot avec des voitures volantes. Gratuit, facile à prendre en main, des années à maîtriser."},
+      {name:"eFootball",platforms:["PC","PS5","Xbox","Mobile"],video:"https://www.youtube.com/watch?v=VFNN3w7XRNE",tags:['sport','foot','competitif','gratuit','mobile'],desc:"L'alternative gratuite à FC 26. Gameplay technique et précis, idéal pour les puristes du foot."},
+      {name:"MotoGP 25",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=NbFknXMFYPo",tags:['sport','course','competitif','realiste','playstation'],desc:"La simulation officielle du championnat MotoGP. Vitesse, précision et adrénaline pure."},
     ]
   },
   HORREUR: {
@@ -291,10 +315,14 @@ const PROFILES = {
     traits: ['Courageux', 'Curieux', 'Adrénaline', 'Immersif', 'Nerveux'],
     pourquoi: "Les jeux d'horreur et de survie te plongent dans une tension permanente — chaque bruit peut être le dernier.",
     games: [
-      {name:"Resident Evil 4 Remake",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=aPGOMGSBJH4",desc:"Un chef-d'œuvre de l'horreur action, entièrement repensé avec un gameplay moderne et intense."},
-      {name:"Alan Wake 2",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=j7BRjM6SnJo",desc:"Un thriller psychologique sombre et atmosphérique, entre réalité et cauchemar."},
-      {name:"Dead Space Remake",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=KKl1k-CaFXo",desc:"Horreur de survie dans une station spatiale. Tension maximale, ambiance terrifiante."},
-      {name:"Phasmophobia",platforms:["PC"],video:"https://www.youtube.com/watch?v=m4M6YEo6cTs",desc:"Chasse aux fantômes en co-op. Une atmosphère oppressante et des frissons garantis."},
+      {name:"Resident Evil 4 Remake",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=aPGOMGSBJH4",tags:['horreur','solo','action','realiste','difficile'],desc:"Chef-d'œuvre de l'horreur action entièrement repensé. Gameplay moderne, tension permanente."},
+      {name:"The Outlast Trials",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=GMDyHD4mfik",tags:['horreur','coop','survie','realiste','sombre'],desc:"Horreur survie en co-op jusqu'à 4 joueurs. Des expériences atroces à traverser ensemble."},
+      {name:"Dying Light 2",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=tG5V0Bp6bqA",tags:['horreur','open-world','coop','action','realiste','survie'],desc:"Parkour et survie zombie en monde ouvert. Le jour pour explorer, la nuit pour survivre."},
+      {name:"Alan Wake 2",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=j7BRjM6SnJo",tags:['horreur','solo','histoire','sombre','realiste'],desc:"Thriller psychologique sombre et atmosphérique, entre réalité et cauchemar. Un chef-d'œuvre visuel."},
+      {name:"Phasmophobia",platforms:["PC"],video:"https://www.youtube.com/watch?v=m4M6YEo6cTs",tags:['horreur','coop','solo','indie','pc','courte-session'],desc:"Chasse aux fantômes en co-op avec des outils d'investigation. Atmosphère terrifiante, fous rires garantis."},
+      {name:"Dead by Daylight",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=s4LJjxRiWwc",tags:['horreur','coop','competitif','gratuit','switch'],desc:"4 survivants vs 1 tueur en asymétrique. Horreur multijoueur intense avec Freddy, Michael Myers..."},
+      {name:"Sons of the Forest",platforms:["PC"],video:"https://www.youtube.com/watch?v=0KNs4MCY07I",tags:['horreur','survie','craft','open-world','coop','realiste'],desc:"Survie dans une forêt peuplée de mutants. Construction, exploration et terreur permanente."},
+      {name:"Poppy Playtime",platforms:["PC","Mobile"],video:"https://www.youtube.com/watch?v=1UFBkm7WKVU",tags:['horreur','solo','puzzle','indie','pc','mobile','courte-session'],desc:"Explore une usine de jouets abandonnée et hantée. Ambiance oppressante et puzzles ingénieux."},
     ]
   },
   CASUAL: {
@@ -306,10 +334,14 @@ const PROFILES = {
     traits: ['Détendu', 'Fun', 'Social', 'Adaptable', 'Créatif'],
     pourquoi: "Les jeux cozy et casual offrent une expérience douce et accessible — idéaux pour décompresser après une longue journée.",
     games: [
-      {name:"Stardew Valley",platforms:["PC","PS5","Xbox","Switch","Mobile"],video:"https://www.youtube.com/watch?v=ot7uXNQskhs",desc:"Gère ta ferme, rencontre des villageois, pêche et explore des mines. Zen et addictif."},
-      {name:"Animal Crossing: New Horizons",platforms:["Switch"],video:"https://www.youtube.com/watch?v=_3MHfAd6dBw",desc:"Crée ta propre île paradisiaque à ton rythme. Le jeu le plus relaxant qui existe."},
-      {name:"It Takes Two",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=3RB56VETgrg",desc:"Le meilleur jeu co-op à deux avec une histoire touchante et des mécaniques de jeu variées."},
-      {name:"Overcooked! 2",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=AheIiME0Tqc",desc:"Jeu de cuisine en co-op, parfait pour rire avec des amis ou en famille."},
+      {name:"Stardew Valley",platforms:["PC","PS5","Xbox","Switch","Mobile"],video:"https://www.youtube.com/watch?v=ot7uXNQskhs",tags:['casual','cozy','solo','mobile','switch','courte-session','indie'],desc:"Gère ta ferme, rencontre des villageois, pêche et explore des mines. Zen et addictif."},
+      {name:"It Takes Two",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=3RB56VETgrg",tags:['casual','coop','histoire','courte-session','solo'],desc:"Le meilleur jeu co-op à deux avec une histoire touchante et des mécaniques très variées."},
+      {name:"Overcooked! 2",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=AheIiME0Tqc",tags:['casual','coop','switch','courte-session','cartoon','famille'],desc:"Jeu de cuisine en co-op jusqu'à 4 joueurs. Parfait pour rire avec des amis ou en famille."},
+      {name:"Animal Crossing: New Horizons",platforms:["Switch"],video:"https://www.youtube.com/watch?v=_3MHfAd6dBw",tags:['casual','cozy','switch','solo','courte-session','famille'],desc:"Crée ta propre île paradisiaque à ton rythme. Le jeu le plus relaxant du marché."},
+      {name:"Storyteller",platforms:["PC","Switch"],video:"https://www.youtube.com/watch?v=Zx0C2g1kYeo",tags:['casual','puzzle','solo','switch','courte-session','indie'],desc:"Crée des histoires en déplaçant des personnages dans des cases. Puzzle narratif original et malin."},
+      {name:"What Remains of Edith Finch",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=bsC8io4w1sY",tags:['casual','histoire','solo','courte-session','emotion','indie'],desc:"Explore une maison familiale pleine de mystères. Court, beau et émotionnellement fort."},
+      {name:"Planet Coaster 2",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=HJe3N4oHwF4",tags:['casual','gestion','construction','solo','longue-session'],desc:"Construis et gère ton parc d'attractions de rêve. Créatif, fun et accessible à tous."},
+      {name:"Unpacking",platforms:["PC","PS5","Xbox","Switch","Mobile"],video:"https://www.youtube.com/watch?v=3Mb_tdmaXFo",tags:['casual','cozy','solo','switch','mobile','courte-session','indie'],desc:"Range les affaires d'une vie dans des nouvelles maisons. Zen, narratif et profondément touchant."},
     ]
   },
   COOPÉRATIF: {
@@ -321,10 +353,14 @@ const PROFILES = {
     traits: ['Social', 'Coopératif', 'Loyal', 'Communicatif', 'Enjoué'],
     pourquoi: "Les jeux co-op multijoueur t'offrent des moments épiques et des souvenirs avec tes amis qui durent.",
     games: [
-      {name:"Deep Rock Galactic",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=3AcMqBvCDdQ",desc:"Nains spatiaux vs aliens en co-op 4 joueurs. L'un des meilleurs jeux coopératifs du marché."},
-      {name:"Helldivers 2",platforms:["PC","PS5"],video:"https://www.youtube.com/watch?v=CK7t1Q4oMHE",desc:"Combats co-op intenses contre des hordes d'aliens. Fun, chaotique et addictif."},
-      {name:"Sea of Thieves",platforms:["PC","Xbox"],video:"https://www.youtube.com/watch?v=MVaGREHhbU4",desc:"Pirate un bateau avec tes amis, explore les mers, trouve des trésors. Liberté totale."},
-      {name:"Phasmophobia",platforms:["PC"],video:"https://www.youtube.com/watch?v=m4M6YEo6cTs",desc:"Chasse aux fantômes en équipe avec des outils d'investigation. Fous rires et frissons garantis."},
+      {name:"Helldivers 2",platforms:["PC","PS5"],video:"https://www.youtube.com/watch?v=CK7t1Q4oMHE",tags:['coop','fps','action','scifi','playstation','pc'],desc:"Co-op 4 joueurs contre des hordes d'aliens. Chaotique, fun, addictif — Very Positive sur Steam."},
+      {name:"Deep Rock Galactic",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=3AcMqBvCDdQ",tags:['coop','fps','action','scifi','pc'],desc:"Nains spatiaux mineurs vs aliens en co-op 4 joueurs. L'un des meilleurs jeux co-op du marché."},
+      {name:"Baldur's Gate 3",platforms:["PC","PS5"],video:"https://www.youtube.com/watch?v=pF97M_JJCjk",tags:['coop','rpg','histoire','fantastique','longue-session'],desc:"Le RPG de l'année jouable entièrement en co-op jusqu'à 4 joueurs. Une aventure épique à partager."},
+      {name:"Sea of Thieves",platforms:["PC","Xbox"],video:"https://www.youtube.com/watch?v=MVaGREHhbU4",tags:['coop','open-world','action','casual','gratuit'],desc:"Sois pirate avec tes amis : explore les mers, trouve des trésors, coule d'autres bateaux."},
+      {name:"Rust",platforms:["PC"],video:"https://www.youtube.com/watch?v=LGcaB6vrK7w",tags:['coop','survie','craft','fps','difficile','pc','realiste'],desc:"Survie multi-joueurs brutal. Construis une base, forme des alliances, trahis tes ennemis."},
+      {name:"It Takes Two",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=3RB56VETgrg",tags:['coop','histoire','casual','courte-session'],desc:"Co-op à deux obligatoire avec une histoire touchante. Jeu de l'année 2021. Impossible de s'ennuyer."},
+      {name:"Phasmophobia",platforms:["PC"],video:"https://www.youtube.com/watch?v=m4M6YEo6cTs",tags:['coop','horreur','indie','pc','courte-session'],desc:"Chasse aux fantômes en équipe avec des outils d'investigation. Fous rires et frissons garantis."},
+      {name:"ARK: Survival Ascended",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=qZl4PVzOhC8",tags:['coop','survie','craft','open-world','fps','longue-session'],desc:"Apprivoise des dinosaures et construis ta base avec tes amis dans un monde préhistorique immense."},
     ]
   },
   RÉTRO: {
@@ -334,12 +370,16 @@ const PROFILES = {
     gradDark: ['#3d1060', '#1e0840'],
     description: "Tu cherches le défi pur. Les jeux difficiles, précis et qui te punissent sans pitié — tu les aimes pour la satisfaction énorme qu'ils procurent quand tu t'en sors.",
     traits: ['Persévérant', 'Précis', 'Patient', 'Exigeant', 'Focalisé'],
-    pourquoi: "Les jeux indie exigeants et les roguelikes te donnent une satisfaction intense que les jeux faciles ne peuvent pas offrir.",
+    pourquoi: "Les jeux indie exigeants et les roguelikes te donnent une satisfaction intense que les jeux faciles ne peuvent jamais offrir.",
     games: [
-      {name:"Hades II",platforms:["PC"],video:"https://www.youtube.com/watch?v=gL7u0BaNXek",desc:"Le roguelike ultime. Chaque mort t'apprend quelque chose. Fluide, stylé et addictif."},
-      {name:"Hollow Knight",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=UAO2urG23S4",desc:"Metroidvania exigeant dans un monde d'insectes magnifiquement dessiné. Un chef-d'œuvre."},
-      {name:"Celeste",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=70d9irlxiB4",desc:"Jeu de plateforme difficile avec un message profond sur le dépassement de soi."},
-      {name:"Dead Cells",platforms:["PC","PS5","Xbox","Switch","Mobile"],video:"https://www.youtube.com/watch?v=PvY-kUKBxuI",desc:"Roguelite action ultra fluide. Mourir est normal — progresser est inévitable."},
+      {name:"Hades II",platforms:["PC"],video:"https://www.youtube.com/watch?v=gL7u0BaNXek",tags:['roguelike','difficile','solo','indie','pc','action','courte-session'],desc:"Le roguelike ultime. Chaque mort t'apprend quelque chose. Fluide, stylé, addictif. Overwhelmingly Positive."},
+      {name:"Hollow Knight",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=UAO2urG23S4",tags:['difficile','solo','indie','plateforme','switch','sombre'],desc:"Metroidvania exigeant dans un monde d'insectes magnifiquement dessiné. Un chef-d'œuvre indie."},
+      {name:"Slay the Spire 2",platforms:["PC"],video:"https://www.youtube.com/watch?v=Q6vDQwDDOo0",tags:['roguelike','tour-par-tour','solo','indie','pc','courte-session'],desc:"Le meilleur deckbuilder roguelike jamais créé. Chaque run est unique, chaque décision capitale."},
+      {name:"Celeste",platforms:["PC","PS5","Xbox","Switch"],video:"https://www.youtube.com/watch?v=70d9irlxiB4",tags:['difficile','solo','indie','plateforme','switch','courte-session'],desc:"Plateforme exigeant avec un message profond sur le dépassement de soi. Overwhelmingly Positive."},
+      {name:"Dead Cells",platforms:["PC","PS5","Xbox","Switch","Mobile"],video:"https://www.youtube.com/watch?v=PvY-kUKBxuI",tags:['roguelike','difficile','solo','indie','switch','mobile','action'],desc:"Roguelite action ultra fluide. Mourir est normal — progresser est inévitable."},
+      {name:"Elden Ring",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=E3Huy2cdih0",tags:['difficile','open-world','solo','action','fantastique','longue-session'],desc:"Le soulslike le plus acclamé de l'histoire. Monde ouvert, boss titanesques, satisfaction maximale."},
+      {name:"Sekiro: Shadows Die Twice",platforms:["PC","PS5","Xbox"],video:"https://www.youtube.com/watch?v=rXMX4YJ7Lks",tags:['difficile','solo','action','medieval','realiste'],desc:"Le jeu FromSoftware le plus précis. Combat de samouraï ultra exigeant dans le Japon féodal."},
+      {name:"Project Zomboid",platforms:["PC"],video:"https://www.youtube.com/watch?v=CExmyBz2ARs",tags:['difficile','survie','solo','coop','realiste','pc','longue-session'],desc:"Survie zombie hardcore en vue isométrique. La mort est permanente. La vraie."},
     ]
   },
 };
@@ -708,22 +748,35 @@ function computeScores(){
   return totals;
 }
 
+function getUserTags(){
+  const tags = [];
+  answers.flat().forEach(opt=>{
+    if(opt && opt.tags) tags.push(...opt.tags);
+  });
+  return [...new Set(tags)];
+}
+
+function getBestGame(games, userTags){
+  let best = games[0], bestScore = -1;
+  games.forEach(g=>{
+    const score = (g.tags||[]).filter(t=>userTags.includes(t)).length;
+    if(score > bestScore){ bestScore = score; best = g; }
+  });
+  return best;
+}
+
 function getTopProfiles(n=3){
   const scores = computeScores();
   const max = Math.max(...Object.values(scores));
-  const fingerprint = answers.flat().reduce((acc,opt)=>{
-    if(!opt||!opt.l) return acc;
-    for(let i=0;i<opt.l.length;i++) acc += opt.l.charCodeAt(i);
-    return acc;
-  },0);
+  const userTags = getUserTags();
   return Object.entries(scores)
     .sort(([,a],[,b])=>b-a)
     .slice(0,n)
     .map(([cat,score])=>{
       const data = PROFILES[cat];
       if(!data) return null;
-      const gameIndex = fingerprint % data.games.length;
-      return {cat, score, compat: max>0?Math.round(score/max*100):0, game: data.games[gameIndex], ...data};
+      const game = getBestGame(data.games, userTags);
+      return {cat, score, compat: max>0?Math.round(score/max*100):0, game, ...data};
     }).filter(Boolean);
 }
 
