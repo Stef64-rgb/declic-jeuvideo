@@ -135,6 +135,12 @@
   .home-link:hover{color:rgba(255,255,255,.7)}
   .res-footer{color:rgba(255,255,255,.2);font-size:12px;text-align:center;margin-top:8px}
 
+  .game-rec-card{background:rgba(255,255,255,.07);border:1px solid rgba(0,200,255,.15);border-radius:14px;padding:14px;margin-bottom:10px}
+  .game-rec-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .game-rec-num{background:linear-gradient(90deg,#00C8FF,#7B2FBE);color:#fff;font-size:11px;font-weight:900;padding:3px 8px;border-radius:10px;flex-shrink:0}
+  .game-rec-name{font-size:15px;font-weight:800;color:#fff}
+  .game-rec-desc{color:rgba(255,255,255,.6);font-size:13px;line-height:1.4;margin-bottom:8px}
+
   ::-webkit-scrollbar{width:4px}
   ::-webkit-scrollbar-track{background:transparent}
   ::-webkit-scrollbar-thumb{background:rgba(0,200,255,.3);border-radius:2px}
@@ -756,13 +762,11 @@ function getUserTags(){
   return [...new Set(tags)];
 }
 
-function getBestGame(games, userTags){
-  let best = games[0], bestScore = -1;
-  games.forEach(g=>{
-    const score = (g.tags||[]).filter(t=>userTags.includes(t)).length;
-    if(score > bestScore){ bestScore = score; best = g; }
-  });
-  return best;
+function getTopGames(games, userTags, n=4){
+  return games
+    .map(g=>({...g, matchScore:(g.tags||[]).filter(t=>userTags.includes(t)).length}))
+    .sort((a,b)=>b.matchScore-a.matchScore)
+    .slice(0,n);
 }
 
 function getTopProfiles(n=3){
@@ -775,8 +779,8 @@ function getTopProfiles(n=3){
     .map(([cat,score])=>{
       const data = PROFILES[cat];
       if(!data) return null;
-      const game = getBestGame(data.games, userTags);
-      return {cat, score, compat: max>0?Math.round(score/max*100):0, game, ...data};
+      const topGames = getTopGames(data.games, userTags, 4);
+      return {cat, score, compat: max>0?Math.round(score/max*100):0, topGames, ...data};
     }).filter(Boolean);
 }
 
@@ -809,28 +813,9 @@ function showResults(){
         <div id="detail-${i}" style="display:none">
           <div class="card-details">
             <div class="detail-row">
-              <span class="detail-icon">🎮</span>
-              <div>
-                <p class="detail-lbl">Jeu recommandé</p>
-                <p class="detail-val">${p.game.name}</p>
-                <p style="color:rgba(255,255,255,.6);font-size:13px;margin-top:4px">${p.game.desc}</p>
-              </div>
-            </div>
-            <div class="detail-row">
-              <span class="detail-icon">🖥️</span>
-              <div>
-                <p class="detail-lbl">Plateformes compatibles</p>
-                <div class="platform-row">${p.game.platforms.map(pl=>`<span class="platform-chip">${pl}</span>`).join('')}</div>
-              </div>
-            </div>
-            <a class="video-btn" href="${p.game.video}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-              <span style="font-size:22px">▶️</span>
-              <span>Voir la vidéo de démonstration</span>
-            </a>
-            <div class="detail-row">
               <span class="detail-icon">💡</span>
               <div>
-                <p class="detail-lbl">Pourquoi ce jeu ?</p>
+                <p class="detail-lbl">Pourquoi ce profil ?</p>
                 <p class="detail-val">${p.pourquoi}</p>
               </div>
             </div>
@@ -841,9 +826,28 @@ function showResults(){
                 <div class="trait-row">${p.traits.map(t=>`<span class="trait-chip">${t}</span>`).join('')}</div>
               </div>
             </div>
+            <div class="detail-row">
+              <span class="detail-icon">🎮</span>
+              <div style="width:100%">
+                <p class="detail-lbl">4 jeux recommandés pour vous</p>
+              </div>
+            </div>
+            ${p.topGames.map((g,gi)=>`
+            <div class="game-rec-card" onclick="event.stopPropagation()">
+              <div class="game-rec-header">
+                <span class="game-rec-num">#${gi+1}</span>
+                <span class="game-rec-name">${g.name}</span>
+              </div>
+              <p class="game-rec-desc">${g.desc}</p>
+              <div class="platform-row" style="margin-bottom:8px">${g.platforms.map(pl=>`<span class="platform-chip">${pl}</span>`).join('')}</div>
+              <a class="video-btn" href="${g.video}" target="_blank" rel="noopener">
+                <span style="font-size:18px">▶️</span>
+                <span>Voir la démo</span>
+              </a>
+            </div>`).join('')}
           </div>
         </div>
-        <p class="tap-hint" id="hint-${i}">▼ Voir le jeu recommandé</p>
+        <p class="tap-hint" id="hint-${i}">▼ Voir les jeux recommandés</p>
       </div>
     </div>
   `).join('');
@@ -860,7 +864,7 @@ function showResults(){
       <p class="advice-text">La plupart de ces jeux proposent une version d'essai gratuite ou sont disponibles sur des abonnements comme le Game Pass (Xbox/PC) ou le PlayStation Plus. N'hésitez pas à essayer avant d'acheter !</p>
     </div>
     <div class="action-btns">
-      <button class="act-btn" onclick="shareResults(${JSON.stringify(profiles.map(p=>p.game.name))})">
+      <button class="act-btn" onclick="shareResults(${JSON.stringify(profiles.map(p=>p.topGames[0].name))})">
         <span class="act-inner purple">📤&nbsp; Partager mes résultats</span>
       </button>
       <button class="act-btn" onclick="startQuiz()">
